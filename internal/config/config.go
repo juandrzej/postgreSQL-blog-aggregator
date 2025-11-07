@@ -2,8 +2,8 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
+	"path/filepath"
 )
 
 type Config struct {
@@ -15,7 +15,7 @@ func Read() Config {
 	if err != nil {
 		return Config{}
 	}
-	cfgPath := homeDir + "/.gatorconfig.json"
+	cfgPath := filepath.Join(homeDir, "/.gatorconfig.json")
 
 	cfgContent, err := os.ReadFile(cfgPath)
 	if err != nil {
@@ -27,6 +27,5 @@ func Read() Config {
 		return Config{}
 	}
 
-	fmt.Println(cfg)
 	return cfg
 }
