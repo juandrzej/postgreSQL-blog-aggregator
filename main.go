@@ -1,7 +1,9 @@
 package main
 
 import (
-	"github.com/juandrzej/pokedex/internal/config"
+	"github.com/juandrzej/postgreSQL-blog-aggregator/internal/config"
 )
 
-func main {}
+func main() {
+	config.Read()
+}
