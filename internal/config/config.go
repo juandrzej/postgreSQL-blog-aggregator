@@ -38,3 +38,22 @@ func Read() (Config, error) {
 
 	return cfg, nil
 }
+
+func write(cfg Config) error {
+	cfgPath, err := getConfigFilePath()
+	if err != nil {
+		return err
+	}
+
+	jsonData, err := json.MarshalIndent(cfg, "", "	")
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(cfgPath, jsonData, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
