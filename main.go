@@ -2,15 +2,25 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/juandrzej/postgreSQL-blog-aggregator/internal/config"
 )
 
 func main() {
-	config, err := config.Read()
+	cfg, err := config.Read()
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
-	fmt.Println(config)
+
+	if err := cfg.SetUser("juan"); err != nil {
+		log.Fatal(err)
+	}
+
+	cfg2, err := config.Read()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(cfg2)
 
 }
