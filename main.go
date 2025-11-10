@@ -24,3 +24,12 @@ func main() {
 	fmt.Println(cfg2)
 
 }
+
+type state struct {
+	cfg *config.Config
+}
+
+type command struct {
+	name      string
+	arguments []string
+}
