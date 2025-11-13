@@ -25,6 +25,5 @@ func handlerLogin(s *state, cmd command) error {
 	}
 
 	fmt.Println("The user has been set.")
-
 	return nil
 }
