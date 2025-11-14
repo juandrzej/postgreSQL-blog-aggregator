@@ -6,13 +6,13 @@ import (
 	"github.com/juandrzej/postgreSQL-blog-aggregator/internal/config"
 )
 
-type state struct {
-	cfg *config.Config
-}
-
 type command struct {
 	name      string
 	arguments []string
+}
+
+type state struct {
+	cfg *config.Config
 }
 
 func handlerLogin(s *state, cmd command) error {
@@ -26,4 +26,16 @@ func handlerLogin(s *state, cmd command) error {
 
 	fmt.Println("The user has been set.")
 	return nil
+}
+
+type commands struct {
+	commands map[string]func(*state, command) error
+}
+
+func (c *commands) run(s *state, cmd command) error {
+
+	return nil
+}
+
+func (c *commands) register(name string, f func(*state, command) error) {
 }
