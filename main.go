@@ -1,11 +1,15 @@
 package main
 
+import _ "github.com/lib/pq"
+
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
 
 	"github.com/juandrzej/postgreSQL-blog-aggregator/internal/config"
+	"github.com/juandrzej/postgreSQL-blog-aggregator/internal/database"
 )
 
 func main() {
@@ -15,6 +19,15 @@ func main() {
 		log.Fatal(err)
 	}
 	st.cfg = &cfg
+
+	// postgreSQL
+	db, err := sql.Open("postgres", cfg.DbURL)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	dbQueries := database.New(db)
+	st.db = dbQueries
 
 	cmds := commands{
 		commands: make(map[string]func(*state, command) error),

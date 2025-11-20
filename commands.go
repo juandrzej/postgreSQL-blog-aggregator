@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/juandrzej/postgreSQL-blog-aggregator/internal/config"
+	"github.com/juandrzej/postgreSQL-blog-aggregator/internal/database"
 )
 
 type command struct {
@@ -12,6 +13,7 @@ type command struct {
 }
 
 type state struct {
+	db  *database.Queries
 	cfg *config.Config
 }
 
@@ -28,6 +30,10 @@ func handlerLogin(s *state, cmd command) error {
 
 	fmt.Println("The user has been set.")
 	return nil
+}
+
+func handlerRegister(s *state, cmd command) error {
+
 }
 
 type commands struct {
