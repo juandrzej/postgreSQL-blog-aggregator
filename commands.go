@@ -16,8 +16,10 @@ type state struct {
 }
 
 func handlerLogin(s *state, cmd command) error {
-	if len(cmd.arguments) != 1 {
-		return fmt.Errorf("Invalid arguments number.")
+	if len(cmd.arguments) == 0 {
+		return fmt.Errorf("username is required")
+	} else if len(cmd.arguments) > 1 {
+		return fmt.Errorf("too many arguments, only username is required")
 	}
 
 	if err := s.cfg.SetUser(cmd.arguments[0]); err != nil {
@@ -33,9 +35,15 @@ type commands struct {
 }
 
 func (c *commands) run(s *state, cmd command) error {
-
-	return nil
+	// This method runs a given command with the provided state if it exists.
+	handler, ok := c.commands[cmd.name]
+	if !ok {
+		return fmt.Errorf("unknown command")
+	}
+	return handler(s, cmd)
 }
 
 func (c *commands) register(name string, f func(*state, command) error) {
+	// This method registers a new handler function for a command name.
+	c.commands[name] = f
 }
