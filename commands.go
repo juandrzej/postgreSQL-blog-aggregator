@@ -1,7 +1,13 @@
 package main
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
+	"os"
+	"time"
+
+	"github.com/google/uuid"
 
 	"github.com/juandrzej/postgreSQL-blog-aggregator/internal/config"
 	"github.com/juandrzej/postgreSQL-blog-aggregator/internal/database"
@@ -18,6 +24,7 @@ type state struct {
 }
 
 func handlerLogin(s *state, cmd command) error {
+	// This func logs in given user while checking argument number and throwing error if applicable
 	if len(cmd.arguments) == 0 {
 		return fmt.Errorf("username is required")
 	} else if len(cmd.arguments) > 1 {
@@ -33,7 +40,37 @@ func handlerLogin(s *state, cmd command) error {
 }
 
 func handlerRegister(s *state, cmd command) error {
+	// This func registers new users in the database
+	if len(cmd.arguments) == 0 {
+		return fmt.Errorf("username is required")
+	} else if len(cmd.arguments) > 1 {
+		return fmt.Errorf("too many arguments, only username is required")
+	}
 
+	_, err := s.db.GetUser(context.Background(), cmd.arguments[0])
+	if err == nil {
+		os.Exit(1)
+	}
+	if err == sql.ErrNoRows {
+	} else {
+		return err
+	}
+
+	user, err := s.db.CreateUser(context.Background(), database.CreateUserParam{
+		ID:        uuid.New(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		Name:      cmd.arguments[0],
+	})
+	if err != nil {
+		return err
+	}
+
+	s.cfg.CurrentUserName = user.Name
+	fmt.Println("User was successfully created!")
+	fmt.Println(user)
+
+	return nil
 }
 
 type commands struct {
