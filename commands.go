@@ -93,6 +93,23 @@ func handlerReset(s *state, cmd command) error {
 	return nil
 }
 
+func handlerUsers(s *state, cmd command) error {
+	// Lists all users from the database
+	users, err := s.db.GetUsers(context.Background())
+	if err != nil {
+		return err
+	}
+
+	for _, user := range users {
+		if user.Name != s.cfg.CurrentUserName {
+			fmt.Printf("* %s\n", user.Name)
+		} else {
+			fmt.Printf("* %s (current)\n", user.Name)
+		}
+	}
+	return nil
+}
+
 type commands struct {
 	commands map[string]func(*state, command) error
 }
