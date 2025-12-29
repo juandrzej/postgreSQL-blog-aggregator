@@ -56,7 +56,7 @@ func handlerRegister(s *state, cmd command) error {
 		return err
 	}
 
-	user, err := s.db.CreateUser(context.Background(), database.CreateUserParam{
+	user, err := s.db.CreateUser(context.Background(), database.CreateUserParams{
 		ID:        uuid.New(),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
