@@ -82,6 +82,17 @@ func handlerRegister(s *state, cmd command) error {
 	return nil
 }
 
+func handlerReset(s *state, cmd command) error {
+	// Delete all users from the database
+	err := s.db.DeleteAllUsers(context.Background())
+	if err != nil {
+		return fmt.Errorf("failed to reset database: %w", err)
+	}
+
+	fmt.Println("Database has been reset successfully!")
+	return nil
+}
+
 type commands struct {
 	commands map[string]func(*state, command) error
 }

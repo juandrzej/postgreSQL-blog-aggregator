@@ -35,6 +35,7 @@ func main() {
 
 	cmds.register("login", handlerLogin)
 	cmds.register("register", handlerRegister)
+	cmds.register("reset", handlerReset)
 	arguments := os.Args
 	if len(arguments) < 2 {
 		fmt.Fprintln(os.Stderr, fmt.Errorf("not enough arguments"))
