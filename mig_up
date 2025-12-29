@@ -1,0 +1,2 @@
+goose -dir sql/schema postgres "user=postgres dbname=gator sslmode=disable" up
+

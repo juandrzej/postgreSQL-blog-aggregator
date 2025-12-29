@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -31,6 +30,14 @@ func handlerLogin(s *state, cmd command) error {
 		return fmt.Errorf("too many arguments, only username is required")
 	}
 
+	_, err := s.db.GetUser(context.Background(), cmd.arguments[0])
+	if err == sql.ErrNoRows {
+		return fmt.Errorf("user '%s' doesn't exist in the database", cmd.arguments[0])
+	}
+	if err != nil {
+		return err
+	}
+
 	if err := s.cfg.SetUser(cmd.arguments[0]); err != nil {
 		return err
 	}
@@ -49,7 +56,7 @@ func handlerRegister(s *state, cmd command) error {
 
 	_, err := s.db.GetUser(context.Background(), cmd.arguments[0])
 	if err == nil {
-		os.Exit(1)
+		return fmt.Errorf("user '%s' already exists", cmd.arguments[0])
 	}
 	if err == sql.ErrNoRows {
 	} else {
@@ -66,7 +73,9 @@ func handlerRegister(s *state, cmd command) error {
 		return err
 	}
 
-	s.cfg.CurrentUserName = user.Name
+	if err := s.cfg.SetUser(cmd.arguments[0]); err != nil {
+		return err
+	}
 	fmt.Println("User was successfully created!")
 	fmt.Println(user)
 
