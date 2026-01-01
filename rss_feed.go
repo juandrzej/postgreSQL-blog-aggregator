@@ -1,4 +1,4 @@
-package rss
+package main
 
 import (
 	"context"
@@ -25,7 +25,7 @@ type RSSItem struct {
 	PubDate     string `xml:"pubDate"`
 }
 
-func fetchFeed(ctx context.Context, feedURL string) (*RSSFeed, error) {
+func FetchFeed(ctx context.Context, feedURL string) (*RSSFeed, error) {
 	client := &http.Client{}
 
 	req, err := http.NewRequestWithContext(ctx, "GET", feedURL, nil)
