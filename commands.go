@@ -21,6 +21,11 @@ type commands struct {
 	commands map[string]func(*state, command) error
 }
 
+func (c *commands) register(name string, f func(*state, command) error) {
+	// This method registers a new handler function for a command name.
+	c.commands[name] = f
+}
+
 func (c *commands) run(s *state, cmd command) error {
 	// This method runs a given command with the provided state if it exists.
 	handler, ok := c.commands[cmd.name]
@@ -28,9 +33,4 @@ func (c *commands) run(s *state, cmd command) error {
 		return fmt.Errorf("unknown command")
 	}
 	return handler(s, cmd)
-}
-
-func (c *commands) register(name string, f func(*state, command) error) {
-	// This method registers a new handler function for a command name.
-	c.commands[name] = f
 }
