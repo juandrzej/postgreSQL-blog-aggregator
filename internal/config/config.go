@@ -67,3 +67,7 @@ func (cfg *Config) SetUser(userName string) error {
 	}
 	return nil
 }
+
+func (cfg *Config) GetCurrentUserName() string {
+	return cfg.CurrentUserName
+}
