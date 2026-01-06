@@ -3,11 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"time"
-
-	"github.com/google/uuid"
-
-	"github.com/juandrzej/postgreSQL-blog-aggregator/internal/database"
 )
 
 func handlerAgg(s *state, cmd command) error {
